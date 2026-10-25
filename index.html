@@ -457,15 +457,15 @@ caption { caption-side: top; text-align: left; padding: 14px 16px; font: 600 .9r
   background: radial-gradient(60% 60% at 50% 50%, rgba(5,4,3,.15), rgba(5,4,3,.6));
   transition: opacity .45s, visibility 0s .45s;
 }
-/* el botón va en el espacio libre del estadio (a la derecha) para no tapar el logo de la portada del video */
-.tutorial-play-grupo { position: absolute; left: 78%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 14px; }
+/* el botón va centrado en el recuadro del video */
+.tutorial-play-grupo { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 14px; }
 .tutorial-play-anillo {
   width: 92px; height: 92px; border-radius: 50%; display: grid; place-items: center;
   background: linear-gradient(180deg, #ffd977, var(--gold) 50%, #d9a432);
   box-shadow: 0 0 0 1px rgba(255,240,179,.6) inset, 0 10px 30px rgba(0,0,0,.5), 0 0 0 10px rgba(245,197,66,.16), 0 0 46px rgba(245,197,66,.45);
   animation: latido 1.1s ease-in-out infinite; transition: transform .3s var(--ease-quad);
 }
-.tutorial-play-anillo svg { width: 40px; height: 40px; margin-left: 5px; }
+.tutorial-play-anillo svg { width: 40px; height: 40px; }
 .tutorial-play:hover .tutorial-play-anillo { transform: translateY(-5px); }
 .tutorial-play:active .tutorial-play-anillo { transform: translateY(3px) scale(.95); transition-duration: .06s; }
 .tutorial-play-texto { white-space: nowrap; font: 800 .8rem/1 var(--ui); letter-spacing: .18em; text-transform: uppercase; color: var(--cream); text-shadow: 0 2px 12px rgba(0,0,0,.8); }
@@ -500,7 +500,7 @@ caption { caption-side: top; text-align: left; padding: 14px 16px; font: 600 .9r
 .tutorial-marco:fullscreen { border-radius: 0; border: 0; }
 .tutorial-marco:fullscreen::after { display: none; }
 @media (max-width: 600px) {
-  .tutorial-play-grupo { left: 81%; gap: 10px; }
+  .tutorial-play-grupo { gap: 10px; }
   .tutorial-play-texto { font-size: .66rem; letter-spacing: .12em; }
   .tutorial-play-anillo { width: 64px; height: 64px; }
   .tutorial-play-anillo svg { width: 30px; height: 30px; }
@@ -777,7 +777,7 @@ a.wa-opcion:hover .wa-flecha { transform: translateX(4px); }
         <video id="tutorial-video" src="tutorial.mp4" poster="tutorial-portada.jpg" preload="none" playsinline aria-label="Video tutorial: así se apuesta en Black Mustang"></video>
         <button class="tutorial-play" id="tutorial-play" type="button" aria-label="Reproducir el video tutorial">
           <span class="tutorial-play-grupo">
-            <span class="tutorial-play-anillo"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg></span>
+            <span class="tutorial-play-anillo"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7.75 5.5v13l11-6.5z"/></svg></span>
             <span class="tutorial-play-texto">Ver el tutorial</span>
           </span>
         </button>
