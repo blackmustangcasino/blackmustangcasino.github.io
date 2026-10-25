@@ -435,6 +435,81 @@ caption { caption-side: top; text-align: left; padding: 14px 16px; font: 600 .9r
 .special li::before { content: "◆"; color: var(--gold); font-size: .7rem; padding-top: 5px; }
 .special .big { font: 800 2.6rem/1 var(--display); color: var(--gold); }
 
+/* ---------- video tutorial (La carrera) ---------- */
+.tutorial { display: grid; gap: 20px; margin-bottom: 72px; }
+.tutorial-titulos { display: grid; gap: 10px; }
+.tutorial-chip {
+  width: fit-content; font: 700 .68rem/1 var(--ui); letter-spacing: .16em; text-transform: uppercase; color: var(--on-gold);
+  background: linear-gradient(180deg, #ffd977, var(--gold) 50%, #d9a432); padding: 7px 12px; border-radius: 999px;
+}
+.tutorial-titulos h3 { font-size: clamp(1.5rem, 3vw, 2.1rem); }
+.tutorial-titulos p { color: var(--muted); max-width: 64ch; }
+.tutorial-marco {
+  position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 18px; overflow: hidden; background: #050403;
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 70px rgba(0,0,0,.55), 0 0 60px rgba(245,197,66,.12);
+}
+.tutorial-marco::after { content: ""; position: absolute; inset: 8px; border-radius: 12px; border: 1px solid rgba(245,197,66,.14); pointer-events: none; z-index: 3; }
+.tutorial-marco video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #050403; display: block; }
+.tutorial-play {
+  position: absolute; inset: 0; z-index: 2; display: block;
+  border: 0; cursor: pointer; color: var(--on-gold); -webkit-tap-highlight-color: transparent;
+  background: radial-gradient(60% 60% at 50% 50%, rgba(5,4,3,.15), rgba(5,4,3,.6));
+  transition: opacity .45s, visibility 0s .45s;
+}
+/* el botón va en el espacio libre del estadio (a la derecha) para no tapar el logo de la portada del video */
+.tutorial-play-grupo { position: absolute; left: 78%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 14px; }
+.tutorial-play-anillo {
+  width: 92px; height: 92px; border-radius: 50%; display: grid; place-items: center;
+  background: linear-gradient(180deg, #ffd977, var(--gold) 50%, #d9a432);
+  box-shadow: 0 0 0 1px rgba(255,240,179,.6) inset, 0 10px 30px rgba(0,0,0,.5), 0 0 0 10px rgba(245,197,66,.16), 0 0 46px rgba(245,197,66,.45);
+  animation: latido 1.1s ease-in-out infinite; transition: transform .3s var(--ease-quad);
+}
+.tutorial-play-anillo svg { width: 40px; height: 40px; margin-left: 5px; }
+.tutorial-play:hover .tutorial-play-anillo { transform: translateY(-5px); }
+.tutorial-play:active .tutorial-play-anillo { transform: translateY(3px) scale(.95); transition-duration: .06s; }
+.tutorial-play-texto { white-space: nowrap; font: 800 .8rem/1 var(--ui); letter-spacing: .18em; text-transform: uppercase; color: var(--cream); text-shadow: 0 2px 12px rgba(0,0,0,.8); }
+.tutorial.reproduciendo .tutorial-play, .tutorial.iniciado .tutorial-play { opacity: 0; visibility: hidden; }
+.tutorial-cargando { position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px; z-index: 2; border-radius: 50%;
+  border: 3px solid rgba(245,197,66,.2); border-top-color: var(--gold); opacity: 0; pointer-events: none; transition: opacity .3s; animation: girar .8s linear infinite; }
+.tutorial.esperando .tutorial-cargando { opacity: 1; }
+@keyframes girar { to { transform: rotate(360deg); } }
+.tutorial-barra {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; display: flex; align-items: center; gap: 10px;
+  padding: 26px 16px 14px; background: linear-gradient(180deg, transparent, rgba(5,4,3,.85));
+  opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; pointer-events: none;
+}
+.tutorial.iniciado .tutorial-barra { opacity: 1; transform: none; pointer-events: auto; }
+.tutorial.iniciado.reproduciendo.quieto .tutorial-barra { opacity: 0; transform: translateY(8px); pointer-events: none; }
+.tutorial.iniciado.reproduciendo.quieto .tutorial-marco { cursor: none; }
+.tutorial-btn { flex: none; width: 38px; height: 38px; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; color: var(--cream); background: rgba(12,10,9,.55); box-shadow: 0 0 0 1px var(--line) inset; transition: color .2s, box-shadow .2s; }
+.tutorial-btn:hover { color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
+.tutorial-btn svg { width: 18px; height: 18px; }
+.tutorial-btn .i-play, .tutorial-btn .i-mudo { display: none; }
+.tutorial:not(.reproduciendo) #tutorial-pausa .i-pausa { display: none; }
+.tutorial:not(.reproduciendo) #tutorial-pausa .i-play { display: block; }
+.tutorial.mudo #tutorial-volumen .i-sonido { display: none; }
+.tutorial.mudo #tutorial-volumen .i-mudo { display: block; }
+.tutorial-tiempo { flex: none; font: 600 .78rem/1 var(--ui); color: var(--cream); font-variant-numeric: tabular-nums; min-width: 84px; }
+.tutorial-progreso { flex: 1 1 auto; min-width: 0; -webkit-appearance: none; appearance: none; height: 18px; background: transparent; cursor: pointer; margin: 0; }
+.tutorial-progreso::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--gold) var(--avance, 0%), rgba(245,235,210,.22) var(--avance, 0%)); }
+.tutorial-progreso::-moz-range-track { height: 4px; border-radius: 4px; background: rgba(245,235,210,.22); }
+.tutorial-progreso::-moz-range-progress { height: 4px; border-radius: 4px; background: var(--gold); }
+.tutorial-progreso::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%; background: var(--gold-hi); box-shadow: 0 0 10px rgba(245,197,66,.8); }
+.tutorial-progreso::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 50%; background: var(--gold-hi); box-shadow: 0 0 10px rgba(245,197,66,.8); }
+.tutorial-marco:fullscreen { border-radius: 0; border: 0; }
+.tutorial-marco:fullscreen::after { display: none; }
+@media (max-width: 600px) {
+  .tutorial-play-grupo { left: 81%; gap: 10px; }
+  .tutorial-play-texto { font-size: .66rem; letter-spacing: .12em; }
+  .tutorial-play-anillo { width: 64px; height: 64px; }
+  .tutorial-play-anillo svg { width: 30px; height: 30px; }
+  .tutorial-barra { gap: 6px; padding: 20px 10px 10px; }
+  .tutorial-btn { width: 32px; height: 32px; }
+  .tutorial-tiempo { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .tutorial-play-anillo, .tutorial-cargando { animation: none; } }
+
 /* ---------- juegos ---------- */
 .games { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 @media (max-width: 1000px) { .games { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -688,6 +763,41 @@ a.wa-opcion:hover .wa-flecha { transform: translateX(4px); }
       <div class="eyebrow in">El juego principal</div>
       <h2 class="in" tabindex="-1">La carrera de <span class="gold-text">Black Mustang</span></h2>
       <p class="lead in">Cinco caballos, cinco jugadores y tres vueltas. Cada jugador elige un caballo identificado por el color de su montura. El resultado lo decide un sistema de probabilidades ponderadas que se calcula en el instante en que arranca la carrera, y la animación solo lo representa.</p>
+    </div>
+
+    <div class="tutorial in" id="tutorial">
+      <div class="tutorial-head">
+        <div class="tutorial-titulos">
+          <span class="tutorial-chip">Tutorial · 1:08</span>
+          <h3>Así se apuesta en <span class="gold-text">Black Mustang</span></h3>
+          <p>Mira el juego en acción: cómo se elige el monto, cuánto gana cada puesto y cómo se registran los cinco jugadores antes de la carrera.</p>
+        </div>
+      </div>
+      <div class="tutorial-marco" id="tutorial-marco">
+        <video id="tutorial-video" src="tutorial.mp4" poster="tutorial-portada.jpg" preload="none" playsinline aria-label="Video tutorial: así se apuesta en Black Mustang"></video>
+        <button class="tutorial-play" id="tutorial-play" type="button" aria-label="Reproducir el video tutorial">
+          <span class="tutorial-play-grupo">
+            <span class="tutorial-play-anillo"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg></span>
+            <span class="tutorial-play-texto">Ver el tutorial</span>
+          </span>
+        </button>
+        <div class="tutorial-cargando" aria-hidden="true"></div>
+        <div class="tutorial-barra" id="tutorial-barra">
+          <button class="tutorial-btn" id="tutorial-pausa" type="button" aria-label="Pausar">
+            <svg class="i-pausa" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+            <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg>
+          </button>
+          <span class="tutorial-tiempo" id="tutorial-tiempo">0:00 / 1:08</span>
+          <input class="tutorial-progreso" id="tutorial-progreso" type="range" min="0" max="1000" value="0" step="1" aria-label="Avance del video">
+          <button class="tutorial-btn" id="tutorial-volumen" type="button" aria-label="Silenciar el video">
+            <svg class="i-sonido" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg class="i-mudo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9.5l5 5M20.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <button class="tutorial-btn" id="tutorial-completa" type="button" aria-label="Pantalla completa">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="horses" aria-label="Caballos de la carrera">
@@ -1085,6 +1195,7 @@ const Sonido = (() => {
   const BPM = 144, COMPASES = 16;                         // la música dura justo 16 compases (26,67 s)
   const btn = document.getElementById("btn-sonido");
   let ctx = null, maestro = null, bufs = {}, musica = null, iniciado = false, ultimoHover = 0, vozHover = null;
+  let gMusica = null, enPausa = false;          // enPausa: la música de fondo calla mientras se ve el video tutorial
   let encendido = true;
   try { encendido = localStorage.getItem("bm-sonido") !== "off"; } catch (e) {}
   // los archivos se descargan apenas abre la página; se decodifican cuando hay contexto de audio
@@ -1120,8 +1231,8 @@ const Sonido = (() => {
     src.connect(g).connect(maestro);
     src.start(0, src.loopStart);
     g.gain.linearRampToValueAtTime(0, ctx.currentTime);
-    g.gain.linearRampToValueAtTime(VOL.musica, ctx.currentTime + 1.5);   // entra suave
-    musica = src;
+    g.gain.linearRampToValueAtTime(enPausa ? 0 : VOL.musica, ctx.currentTime + 1.5);   // entra suave
+    musica = src; gMusica = g;
   }
   function iniciar() {
     if (iniciado) return;
@@ -1178,11 +1289,19 @@ const Sonido = (() => {
     if (document.hidden) ctx.suspend(); else if (encendido) ctx.resume();
   });
   pintar();
-  return { hover, salir, click: () => efecto("click") };
+  // el video tutorial apaga la música de fondo (en 0,5 s) y al pausarlo o terminar vuelve a subir (en 1,2 s)
+  function pausaMusica(si) {
+    enPausa = si;
+    if (!gMusica) return;
+    const t = ctx.currentTime;
+    gMusica.gain.cancelScheduledValues(t); gMusica.gain.setValueAtTime(gMusica.gain.value, t);
+    gMusica.gain.linearRampToValueAtTime(si ? 0 : VOL.musica, t + (si ? 0.5 : 1.2));
+  }
+  return { hover, salir, click: () => efecto("click"), pausaMusica, iniciar };
 })();
 
 /* Efectos en los botones: campanita al entrar con el ratón y click de casino al presionar */
-const CON_SONIDO = ".btn, .nav-links a, .brand, .siguiente button, #logo-hero, .sonido, .game, .modal-x, .red-social, a.wa-opcion";
+const CON_SONIDO = ".btn, .nav-links a, .brand, .siguiente button, #logo-hero, .sonido, .game, .modal-x, .red-social, a.wa-opcion, .tutorial-play";
 let sobre = null;
 document.addEventListener("pointerover", e => {
   if (e.pointerType !== "mouse") return;
@@ -1224,6 +1343,7 @@ function mostrar(id) {
   marcarMenu(id);
   try { history.replaceState(null, "", "#" + id); } catch (e) {}
   if (id === "inicio") arrancarPortada(); else pararPortada();
+  if (id !== "carrera" && window.Tutorial) Tutorial.pausar();
   if (id === "proyecto") contar();
 }
 function cascada(el, retraso = 0) {
@@ -1436,6 +1556,57 @@ document.getElementById("redes").addEventListener("click", e => {
   const seleccionar = () => { const r = document.createRange(); r.selectNodeContents(b.querySelector("span:not(.ico)")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); aviso.textContent = "Selecciona y copia"; };
   try { navigator.clipboard.writeText(c.copiar).then(listo, seleccionar); } catch (err) { seleccionar(); }
 });
+
+/* =========================================================
+   VIDEO TUTORIAL (pestaña La carrera)
+   Se descarga solo al tocar reproducir. Mientras suena, la música de fondo calla y
+   vuelve a subir al pausar o terminar. Se pausa solo al cambiar de pestaña.
+   ========================================================= */
+window.Tutorial = (() => {
+  const caja = document.getElementById("tutorial"), v = document.getElementById("tutorial-video");
+  const marco = document.getElementById("tutorial-marco"), barra = document.getElementById("tutorial-barra");
+  const prog = document.getElementById("tutorial-progreso"), tiempo = document.getElementById("tutorial-tiempo");
+  const fmt = t => { t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0"); };
+  let arrastrando = false, quietoT = 0;
+  function pintar() {
+    const d = v.duration || 68.35, p = (v.currentTime / d) || 0;
+    if (!arrastrando) prog.value = Math.round(p * 1000);
+    prog.style.setProperty("--avance", (prog.value / 10) + "%");
+    tiempo.textContent = fmt(v.currentTime) + " / " + fmt(d);
+  }
+  function reproducir() {
+    caja.classList.add("iniciado");
+    Sonido.iniciar();                                   // si la música aún no arrancaba, queda lista (y en silencio mientras dura el video)
+    const r = v.play(); if (r && r.catch) r.catch(() => {});
+  }
+  function despertar() {                                // la barra se esconde sola a los 2,5 s sin mover el ratón
+    caja.classList.remove("quieto"); clearTimeout(quietoT);
+    if (!v.paused) quietoT = setTimeout(() => caja.classList.add("quieto"), 2500);
+  }
+  document.getElementById("tutorial-play").addEventListener("click", reproducir);
+  document.getElementById("tutorial-pausa").addEventListener("click", () => v.paused ? reproducir() : v.pause());
+  v.addEventListener("click", () => { if (caja.classList.contains("iniciado")) { v.paused ? reproducir() : v.pause(); } });
+  document.getElementById("tutorial-volumen").addEventListener("click", () => { v.muted = !v.muted; caja.classList.toggle("mudo", v.muted); });
+  document.getElementById("tutorial-completa").addEventListener("click", () => {
+    if (document.fullscreenElement || document.webkitFullscreenElement) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+    const pedir = marco.requestFullscreen || marco.webkitRequestFullscreen;
+    if (pedir) { const r = pedir.call(marco); if (r && r.catch) r.catch(() => { if (v.webkitEnterFullscreen) v.webkitEnterFullscreen(); }); }
+    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();          // iPhone: pantalla completa del propio video
+  });
+  prog.addEventListener("input", () => { arrastrando = true; const d = v.duration || 68.35; tiempo.textContent = fmt(prog.value / 1000 * d) + " / " + fmt(d); prog.style.setProperty("--avance", (prog.value / 10) + "%"); });
+  prog.addEventListener("change", () => { const d = v.duration; if (d) v.currentTime = prog.value / 1000 * d; arrastrando = false; });
+  v.addEventListener("timeupdate", pintar);
+  v.addEventListener("loadedmetadata", pintar);
+  v.addEventListener("play", () => { caja.classList.add("reproduciendo"); Sonido.pausaMusica(true); despertar(); });
+  v.addEventListener("pause", () => { caja.classList.remove("reproduciendo", "quieto"); Sonido.pausaMusica(false); });
+  v.addEventListener("ended", () => { caja.classList.remove("iniciado", "reproduciendo", "quieto"); v.currentTime = 0; pintar(); });
+  v.addEventListener("waiting", () => caja.classList.add("esperando"));
+  v.addEventListener("error", () => caja.classList.remove("iniciado", "reproduciendo", "quieto", "esperando"));   // si no carga, vuelve el botón de reproducir
+  ["playing", "canplay", "pause"].forEach(ev => v.addEventListener(ev, () => caja.classList.remove("esperando")));
+  marco.addEventListener("pointermove", despertar);
+  marco.addEventListener("pointerdown", despertar);
+  return { pausar() { if (!v.paused) v.pause(); } };
+})();
 
 /* =========================================================
    6. ORGANIGRAMA
